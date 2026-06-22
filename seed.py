@@ -20,31 +20,31 @@ def d(days_ago):
     return (TODAY - timedelta(days=days_ago)).isoformat()
 
 
-# (name, CAS, hazard class, SDS link, unit, reorder_level)
+# (name, CAS, category, hazard class, SDS link, unit, reorder_level)
 CHEMICALS = [
-    ("Nickel Sulfate Hexahydrate", "10101-97-0", "Carcinogen / Aquatic Toxic",
+    ("Nickel Sulfate Hexahydrate", "10101-97-0", "Plating Salt", "Carcinogen / Aquatic Toxic",
      "https://sds.example.com/nickel-sulfate", "kg", 50),
-    ("Nickel Chloride", "7791-20-0", "Carcinogen / Toxic",
+    ("Nickel Chloride", "7791-20-0", "Plating Salt", "Carcinogen / Toxic",
      "https://sds.example.com/nickel-chloride", "kg", 25),
-    ("Chromic Acid (Chromium Trioxide)", "1333-82-0", "Oxidizer / Carcinogen",
+    ("Chromic Acid (Chromium Trioxide)", "1333-82-0", "Plating Chemical", "Oxidizer / Carcinogen",
      "https://sds.example.com/chromic-acid", "kg", 40),
-    ("Sodium Hydroxide", "1310-73-2", "Corrosive",
+    ("Sodium Hydroxide", "1310-73-2", "Alkali", "Corrosive",
      "https://sds.example.com/sodium-hydroxide", "kg", 60),
-    ("Sulfuric Acid 98%", "7664-93-9", "Corrosive",
+    ("Sulfuric Acid 98%", "7664-93-9", "Acid", "Corrosive",
      "https://sds.example.com/sulfuric-acid", "L", 80),
-    ("Hydrochloric Acid 32%", "7647-01-0", "Corrosive",
+    ("Hydrochloric Acid 32%", "7647-01-0", "Acid", "Corrosive",
      "https://sds.example.com/hydrochloric-acid", "L", 70),
-    ("Boric Acid", "10043-35-3", "Reproductive Toxin",
+    ("Boric Acid", "10043-35-3", "Additive", "Reproductive Toxin",
      "https://sds.example.com/boric-acid", "kg", 30),
-    ("Copper Sulfate Pentahydrate", "7758-99-8", "Aquatic Toxic / Irritant",
+    ("Copper Sulfate Pentahydrate", "7758-99-8", "Plating Salt", "Aquatic Toxic / Irritant",
      "https://sds.example.com/copper-sulfate", "kg", 35),
-    ("Zinc Chloride", "7646-85-7", "Corrosive / Aquatic Toxic",
+    ("Zinc Chloride", "7646-85-7", "Plating Salt", "Corrosive / Aquatic Toxic",
      "https://sds.example.com/zinc-chloride", "kg", 30),
-    ("Sodium Cyanide", "143-33-9", "Acute Toxic",
+    ("Sodium Cyanide", "143-33-9", "Plating Salt", "Acute Toxic",
      "https://sds.example.com/sodium-cyanide", "kg", 20),
-    ("Citric Acid", "77-92-9", "Irritant",
+    ("Citric Acid", "77-92-9", "Cleaner", "Irritant",
      "https://sds.example.com/citric-acid", "kg", 25),
-    ("Nitric Acid 68%", "7697-37-2", "Oxidizer / Corrosive",
+    ("Nitric Acid 68%", "7697-37-2", "Acid", "Oxidizer / Corrosive",
      "https://sds.example.com/nitric-acid", "L", 45),
 ]
 
@@ -76,11 +76,11 @@ def main():
 
     # --- Chemicals ---
     chem_ids = {}
-    for name, cas, hazard, sds, unit, reorder in CHEMICALS:
+    for name, cas, category, hazard, sds, unit, reorder in CHEMICALS:
         cur.execute(
-            "INSERT INTO chemicals (name, cas_number, hazard_class, sds_link, unit, reorder_level)"
-            " VALUES (?,?,?,?,?,?)",
-            (name, cas, hazard, sds, unit, reorder),
+            "INSERT INTO chemicals (name, cas_number, category, hazard_class, sds_link, unit, reorder_level)"
+            " VALUES (?,?,?,?,?,?,?)",
+            (name, cas, category, hazard, sds, unit, reorder),
         )
         chem_ids[name] = cur.lastrowid
 

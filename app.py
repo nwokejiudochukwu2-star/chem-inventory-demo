@@ -14,6 +14,7 @@ import streamlit as st
 
 import db
 import seed
+import assistant
 
 st.set_page_config(page_title="Chem Inventory & Compliance", page_icon="🧪", layout="wide")
 
@@ -428,6 +429,7 @@ def main():
         "Log Bath Addition/Cleaning": page_log_bath,
         "Add Effluent Sample": page_effluent,
         "Inventory Report": page_report,
+        "Assistant": assistant.page_assistant,
     }
     choice = st.sidebar.radio("Navigate", list(pages.keys()))
     st.sidebar.divider()

@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS chemicals (
     id            INTEGER PRIMARY KEY AUTOINCREMENT,
     name          TEXT    NOT NULL,
     cas_number    TEXT,
+    category      TEXT,
     hazard_class  TEXT,
     sds_link      TEXT,
     unit          TEXT    NOT NULL DEFAULT 'kg',
@@ -104,11 +105,19 @@ def get_connection():
 
 
 def init_db():
-    """Create all tables if they do not already exist."""
+    """Create all tables if they do not already exist, then run migrations."""
     conn = get_connection()
     conn.executescript(SCHEMA)
+    _migrate(conn)
     conn.commit()
     conn.close()
+
+
+def _migrate(conn):
+    """Lightweight migrations for databases created before a column existed."""
+    cols = {r["name"] for r in conn.execute("PRAGMA table_info(chemicals)")}
+    if "category" not in cols:
+        conn.execute("ALTER TABLE chemicals ADD COLUMN category TEXT")
 
 
 def lot_on_hand(conn, lot_id):
